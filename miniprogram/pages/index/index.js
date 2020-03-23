@@ -13,19 +13,6 @@ Page({
 
   // 插入数据
   handleAdd: function() {
-    // 回调函数形式
-    // db.collection('user').add({
-    //   data: {
-    //     name: 'xwl',
-    //     age: 24
-    //   },
-    //   success: (res) => {
-    //     console.log(res)
-    //   },
-    //   fail: err => {
-    //     console.log(err)
-    //   }
-    // })
     // promise形式
     db.collection('user').add({
       data: {
