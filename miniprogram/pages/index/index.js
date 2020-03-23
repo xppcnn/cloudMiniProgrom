@@ -123,17 +123,44 @@ Page({
   //获取图片
   getFile: function() {
     // 先登录获取
+    wx.showLoading({
+      title: '正在加载图片...',
+    });
     wx.cloud.callFunction({
       name: 'login'
     }).then(res => {
       db.collection('images').where({
         _openid: res.result.openid
       }).get().then(res1 => {
+        // 图片加载完后，取消loading
+        wx.hideLoading()
         console.log(res1)
         this.setData({
           images: res1.data,
         })
       })
+    })
+  },
+
+
+  // 下载图片
+  downloadFile: function(e) {
+    console.log(e)
+    const fileId = e.target.dataset.fileid;
+    console.log(fileId)
+    wx.cloud.downloadFile({
+      fileID: fileId,
+      success: res => {
+        console.log(res)
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: res => {
+            wx.showToast({
+              title: '保存成功',
+            })
+          }
+        })
+      }
     })
   }
 })

@@ -13,5 +13,6 @@
   <button bind:tap="getFile" >展示图片</button>
   <block wx:for="{{images}}" wx:key="{{index}}">
     <image src="{{item.fileId}}"></image>
+    <button bind:tap="downloadFile" data-fileId="{{item.fileId}}">图片下载</button>
   </block>
 </view>
