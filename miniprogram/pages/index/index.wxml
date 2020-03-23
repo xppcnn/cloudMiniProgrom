@@ -1,0 +1,11 @@
+<!--index.wxml-->
+<view class="container">
+  <button bind:tap="handleAdd">插入数据</button>
+  <button bind:tap="handleUpdate">更新数据</button>
+  <button bind:tap="handleSearch">查询数据</button>
+  <button bind:tap="handleDelete">删除数据</button>
+  <view>云函数：</view>
+  <button bind:tap="handleSum">调用云函数sum</button>
+  <button bind:tap="getOpenId">获取当前用户openId</button>
+  <button bind:tap="handleBatchDel">批量删除数据</button>
+</view>
