@@ -5,11 +5,7 @@ const app = getApp()
 const db = wx.cloud.database();
 Page({
   data: {
-    avatarUrl: './user-unlogin.png',
-    userInfo: {},
-    logged: false,
-    takeSession: false,
-    requestResult: ''
+    images: [],
   },
 
   onLoad: function() {
@@ -102,7 +98,6 @@ Page({
   },
 
   // 批量删除数据
-
   handleBatchDel: function(){
     wx.cloud.callFunction({
       name: "batchDelete"
@@ -110,4 +105,48 @@ Page({
     .then(res => console.log(res))
     .catch(err => console.log(err))
   },
+
+  // 上传图片
+  handleUpload: function(){
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success(res) {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+        wx.cloud.uploadFile({
+            cloudPath: new Date().getTime() + '.png',  //云服务器上的路径
+            filePath: tempFilePaths[0],
+            success: res => {
+              console.log(res)
+              db.collection("images").add({
+                data: {
+                  fileId: res.fileID,
+                }
+              })
+              .then(res => console.log(res))
+              .catch(err => console.log(err))
+            }
+        })
+      }
+    })
+  },
+
+  //获取图片
+  getFile: function() {
+    // 先登录获取
+    wx.cloud.callFunction({
+      name: 'login'
+    }).then(res => {
+      db.collection('images').where({
+        _openid: res.result.openid
+      }).get().then(res1 => {
+        console.log(res1)
+        this.setData({
+          images: res1.data,
+        })
+      })
+    })
+  }
 })

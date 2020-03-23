@@ -8,4 +8,10 @@
   <button bind:tap="handleSum">调用云函数sum</button>
   <button bind:tap="getOpenId">获取当前用户openId</button>
   <button bind:tap="handleBatchDel">批量删除数据</button>
+  <view>云存储：</view>
+  <button bind:tap="handleUpload">上传图片</button>
+  <button bind:tap="getFile" >展示图片</button>
+  <block wx:for="{{images}}" wx:key="{{index}}">
+    <image src="{{item.fileId}}"></image>
+  </block>
 </view>
